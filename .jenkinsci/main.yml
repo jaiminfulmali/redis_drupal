@@ -1,0 +1,91 @@
+---
+- hosts: all
+  name: Install Project
+  gather_facts: true
+  vars_files:
+    - ./vars/main.yml
+    - ./vars/artisan_commands.yml
+    
+  pre_tasks:
+    - name: add fpm containers to inventory
+      include: ./container_inventory.yml
+
+  tasks:
+    - debug: var=ansible_default_ipv4.address
+    - debug: var=artisan
+       
+    - name: Project type define
+      delegate_to: 127.0.0.1
+      shell: |
+        if [ "$( cat {{ composer_path }} | grep laravel/laravel)" ];
+        then
+          echo "laravel"
+        elif [ "$( cat {{ composer_path }} | grep drupal/core)" ]; then
+            echo "drupal"
+        else
+          echo "please define framework type"
+        fi 
+      register: project_type
+
+    - set_fact:
+        string_to_echo: "{{ project_type.stdout }}"
+
+    - debug:
+        var: project_type.stdout
+
+    - name: project name
+      raw: echo "{{ project_repo }}" | awk -F"/" '{print $NF}' | sed 's/.git.*//' | tr -d _.-
+      register: project_name
+
+    - set_fact:
+       string_to_echo: "{{ project_name.stdout_lines }}"
+
+    - git:
+        repo: "{{project_repo}}"
+        dest: "{{project_root}}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
+        update: yes
+        force: yes
+
+
+    - name: Create a new database with name 'bobdata'
+      mysql_db:
+        name: "{{db_name}}"
+        login_user: "{{db_user}}"
+        login_password: "{{db_pass}}"
+        login_host: localhost
+        login_port: 33066
+        state: present
+
+    - import_tasks: drupal.yml
+      when: project_type.stdout == "drupal"
+
+    - import_tasks: laravel.yml
+      when: project_type.stdout == "laravel"
+
+
+    - name: create nginx conf
+      template:
+        src: "templates/nginx_{{project_type.stdout}}.j2"
+        dest: "{{nginx_config_root}}/{{ project_name.stdout | trim }}.conf"
+      
+    - debug:
+        msg: Nginx Server Name Set to {{ project_name.stdout | trim }}.{{ ansible_default_ipv4.address }}.nip.io
+      
+    - name: run command in nginx
+      delegate_to: web
+      raw: nginx -t
+      register: nginx_test
+      changed_when: false
+     
+    - debug:
+        var: nginx_test
+      
+    - name: Restart a container
+      command: docker restart web
+      when: 
+      - nginx_test.rc == 0
+      changed_when: false
+      
+
+# ########################################################################################
+# ########################################################################################

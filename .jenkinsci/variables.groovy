@@ -1,0 +1,6 @@
+env.ANSIBLE_HOST="addwebprojects.com"
+env.ANSIBLE_PORT="32768"
+env.ANSIBLE_USER="addweb"
+env.PROJECT_ROOT="/srv/www/"
+env.PROJECT_TYPE="html"
+env.PROJECT_DOMAIN=""

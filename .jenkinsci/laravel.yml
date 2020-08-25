@@ -1,0 +1,15 @@
+    
+    - name: create .env 
+      template:
+        src: "templates/{{project_type.stdout}}_env.j2"
+        dest: "{{project_root}}/{{project_type.stdout}}/{{project_name.stdout | trim}}/.env"
+      
+    - name: run composer install
+      delegate_to: "fpm{{php_version}}"
+      raw: sh -c "cd {{project_root}}/{{project_type.stdout}}/{{project_name.stdout | trim}} && composer install"
+
+    - name: run artisan
+      delegate_to: "fpm{{php_version}}"
+      raw: sh -c "cd {{project_root}}/{{project_type.stdout}}/{{project_name.stdout | trim}} && php artisan {{ item }}"
+      with_items: 
+        - "{{artisan}}"

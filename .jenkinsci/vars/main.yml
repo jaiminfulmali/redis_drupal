@@ -1,0 +1,13 @@
+# project_name: curd_demo
+project_root: /srv/www
+#project_type: laravel
+nginx_config_root: /home/addweb/addweb-docker-stack/nginx_conf/{{ project_type.stdout }}/
+project_repo: "{{ lookup('env','GIT_URL') }}"
+git_protocol: http
+magicdns: true
+php_version: 7.2
+db_user: "{{ project_type.stdout }}"
+db_pass: "{{ project_type.stdout }}"
+db_name: "{{ project_type.stdout }}_{{ project_name.stdout | trim }}"
+db_host: mariadb
+composer_path: ../composer.json

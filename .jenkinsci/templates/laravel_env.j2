@@ -1,0 +1,23 @@
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_LOG_LEVEL=debug
+APP_URL="{{ project_name.stdout | trim }}.{{ ansible_default_ipv4.address }}.nip.io"
+
+DB_CONNECTION=mysql
+DB_HOST="{{db_host}}"
+DB_PORT=3306
+DB_DATABASE="{{db_name}}"
+DB_USERNAME="{{db_user}}"
+DB_PASSWORD="{{db_pass}}"
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_DRIVER=sync
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_DRIVER=log

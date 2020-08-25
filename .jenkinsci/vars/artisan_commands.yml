@@ -1,0 +1,7 @@
+artisan:
+  - migrate
+  - key:generate
+    # - db:seed
+  - migrate --seed
+    #  - vendor:publish
+    #  - serve
