@@ -10,3 +10,10 @@
     ansible_connection: docker
     ansible_docker_extra_args: "--tlsverify --tlscacert=./ca.pem --tlscert=./client-cert.pem --tlskey=./client-key.pem -H=tcp://{{ansible_host}}:2375"
   changed_when: false
+
+- name: add fpm7.3
+  add_host:
+    name: fpm7.3
+    ansible_connection: docker
+    ansible_docker_extra_args: "--tlsverify --tlscacert=./ca.pem --tlscert=./client-cert.pem --tlskey=./client-key.pem -H=tcp://{{ansible_host}}:2375"
+  changed_when: false
