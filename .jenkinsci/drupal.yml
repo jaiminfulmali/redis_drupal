@@ -9,6 +9,7 @@
 
     - name: Composer install
       command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 composer install
+      args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
       
       
