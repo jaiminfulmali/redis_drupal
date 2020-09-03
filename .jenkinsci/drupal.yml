@@ -14,14 +14,14 @@
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
       
       
-    - name: Composer install
+    - name: Composer install Drush
       delegate_to: fpm7.3
       raw: composer require drush/drush
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
       
   
-    - name: Redis install
+    - name: Redis install using drush
       delegate_to: fpm7.3
       raw: composer require drupal/redis
       args:
