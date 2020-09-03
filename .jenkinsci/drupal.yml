@@ -8,28 +8,34 @@
       become: true
 
     - name: Composer install
-      command: composer install
+      delegate_to: fpm7.3
+      raw: composer install
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
-      delegate_to: fpm7.3
+      
       
     - name: Composer install
-      command: composer require drush/drush
+      delegate_to: fpm7.3
+      raw: composer require drush/drush
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
-      delegate_to: fpm7.3
+      
   
     - name: Redis install
-      command: composer require drupal/redis
+      delegate_to: fpm7.3
+      raw: composer require drupal/redis
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
-      delegate_to: fpm7.3
+      
 
     - name: Composer install
-      command: composer require predis/predis
+      delegate_to: fpm7.3
+      raw: composer require predis/predis
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
-      delegate_to: fpm7.3
+      
+
+    
 
 
     # - name: Drush cr
