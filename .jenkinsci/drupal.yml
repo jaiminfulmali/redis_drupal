@@ -31,12 +31,12 @@
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
 
     - name: Site Install commands 
-      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 drush si --account-name=admin --account-pass=admin --db-url=mysql:drupal:drupal@mariadb:3306/{{ db_name }} -y
+      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}/vendor/bin fpm7.3 drush si --account-name=admin --account-pass=admin --db-url=mysql://drupal:drupal@mariadb:3306/{{ db_name }} -y
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
 
     - name: Enable Redis Module
-      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 drush en redis
+      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}/vendor/bin fpm7.3 drush en redis
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
 
