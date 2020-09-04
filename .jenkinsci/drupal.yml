@@ -30,10 +30,27 @@
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
 
-    # - name: Site Install commands 
-    #   command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 composer require predis/predis
-    #   args:
-    #     chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
+    - name: Site Install commands 
+      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 drush si --account-name=admin --account-pass=admin --db-url=mysql:drupal:drupal@mariadb:3306/{{ db_name }} -y
+      args:
+        chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
+
+    - name: Enable Redis Module
+      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 drush en redis
+      args:
+        chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
+
+    - name: Insert a line at the end of a file.
+      lineinfile:
+        path: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}/web/sites/default/settings.php"
+        line: "{{ lookup('file', 'templates/redis_settings.txt') }}"
+
+    - name: drush cr
+      command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 drush cr
+      args:
+        chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
+
+
 
 
       
