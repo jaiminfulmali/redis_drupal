@@ -1,0 +1,3 @@
+$settings['redis.connection']['host'] = 'redis-server';
+$settings['redis.connection']['port'] = 6379;
+$settings['cache']['default'] = 'cache.backend.redis';
