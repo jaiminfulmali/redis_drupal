@@ -19,41 +19,24 @@
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
       
   
-    - name: Composer require drush 
+    - name: Composer require Redis 
       command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 composer require drupal/redis
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
         
 
-    - name: Composer require drush 
+    - name: Composer require predis 
       command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 composer require predis/predis
       args:
         chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
-      
 
-    
-
-
-    # - name: Drush cr
-    #   command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 drush cr
+    # - name: Site Install commands 
+    #   command: docker exec -it -w {{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }} fpm7.3 composer require predis/predis
     #   args:
     #     chdir: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}"
 
-      
-    # - name: Change permissions
-    #   file:
-    #     dest: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}/"
-    #     owner: www-data
-    #     group: www-data
-    #     mode: '0775'
-    #     recurse: yes
-    #   become: true
 
-    # - name: change web directory permissions
-    #   file:
-    #     dest: "{{ project_root }}/{{project_type.stdout}}/{{project_name.stdout | trim }}/web/sites"
-    #     owner: www-data
-    #     group: www-data
-    #     mode: '0777'
-    #     recurse: yes
-    #   become: true
+      
+
+        
+
